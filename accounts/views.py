@@ -17,7 +17,7 @@ def register(request):
             group = Group.objects.get(name='Operarios')
             user.groups.add(group)
             messages.success(request, 'Registro exitoso. Bienvenido!')
-            return redirect('home')
+            return redirect('producto:index')
         else:
             for field in form.errors:
                 form[field].field.widget.attrs['class'] += 'is-invalid'
@@ -32,12 +32,12 @@ class CustomLoginView(LoginView):
     
     def get_success_url(self):
         messages.success(self.request, 'Inicio de sesión exitoso, Bienvenido(a)!')
-        return reverse_lazy('home')
+        return reverse_lazy('producto:index')
     
 class CustomLogoutView(LogoutView):
     next_page = reverse_lazy('login')
     
-@login_required
-def home(request):
-    return render(request, 'accounts/home.html')
+# @login_required
+# def home(request):
+#     return render(request, 'accounts/home.html')
     
