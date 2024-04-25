@@ -1,0 +1,33 @@
+{% extends 'base_nav.html'%}
+
+{% block content %}
+  <form action="{% url 'producto:formulario' %}" method="post">
+      {% csrf_token %}
+      <div class="mb-3">
+        <label for="id_nombre" class="form-label">Nombre del producto</label>
+        {{ form.nombre}}
+      </div>
+    
+      <div class="mb-3">
+        <label for="id_image" class="form-label">URL de la imagen</label>
+        {{ form.image}}
+      </div>
+    
+      <div class="mb-3">
+        <label for="id_precio" class="form-label">Precio</label>
+        {{ form.precio}}
+      </div>
+    
+      <div class="mb-3">
+        <label for="id_stock" class="form-label">Stock</label>
+        {{ form.stock}}
+      </div>
+    
+      <div class="mb-3">
+        <label for="id_categoria" class="form-label">Categoria</label>
+        {{ form.categoria}}
+      </div>
+
+      <button type="submit" class="btn btn-success">Enviar</button>
+  </form>
+{% endblock %}

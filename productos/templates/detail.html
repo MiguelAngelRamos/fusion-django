@@ -1,0 +1,22 @@
+{% extends 'base_nav.html'%}
+{% load static %}
+
+{% block extra_css %}
+<link href="{% static 'producto/css/producto_style.css' %}" rel="stylesheet" /> 
+{% endblock %}
+
+{% block content %}
+
+<div class="producto-detalle-container">
+  <div class="producto-imagen">
+    <img src="{{ producto.image }}" alt="{{producto.nombre}}">
+  </div>
+  <div class="producto-info">
+    <h2>{{producto.nombre}}</h2>
+    <p><strong>Precio: </strong>{{producto.precio}}</p>
+    <p><strong>Stock: </strong>{{producto.stock}}</p>
+    <p><strong>Categoría: </strong>{{producto.categoria.nombre}}</p>
+    <p><strong>Creado: </strong>{{producto.create_at}}</p>
+  </div>
+</div>
+{% endblock %}

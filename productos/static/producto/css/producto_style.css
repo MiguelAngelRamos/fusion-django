@@ -1,0 +1,32 @@
+.producto-detalle-container {
+  display: flex;
+ 
+  margin-top: 5rem;
+}
+
+.producto-imagen {
+  flex: 1 0 50%;
+  padding: 10px;
+  text-align: center;
+}
+
+.producto-imagen img {
+  max-width: 100%;
+  height: auto;
+}
+
+.producto-info {
+ flex: 1 0 50%;
+ padding: 20px;
+}
+
+.producto-info h2 {
+  color: #333;
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+ }
+
+ .producto-info p {
+  font-size: 1.2rem;
+  color: #555;
+ }
