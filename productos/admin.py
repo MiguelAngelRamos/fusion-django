@@ -1,5 +1,5 @@
 from django.contrib import admin
-from . models import Categoria, Producto
+from .models import Categoria, Producto
 
 class CategoriaAdmin(admin.ModelAdmin):
     list_display = ('id', 'nombre')
