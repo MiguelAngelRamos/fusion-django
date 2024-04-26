@@ -43,10 +43,8 @@
                   </a>
                   <ul class="dropdown-menu">
 
-                    <li><a class="dropdown-item" href="#">Action</a></li>
-                    <li><a class="dropdown-item" href="#">Another action</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    <li><a class="dropdown-item" href="{% url 'profile' %}">Perfil</a></li>
+               
                     <li>
                       <form action="{% url 'logout' %}" method="post" class="d-flex" role="search">
                         {% csrf_token %}
@@ -75,7 +73,7 @@
     </nav>
     <!-- END: navbar-->
     <div class="container mt-4">
-      <h3 class="text-capitalize mb-5"> Hola, {{ request.user.username }} Bienvenido</h3>
+      <h3 class="text-capitalize mb-5"> Hola, {{ request.user.first_name }} Bienvenido</h3>
       {% block content %}
       {% endblock %}
     </div>

@@ -5,6 +5,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
+from .forms import CustomUserCreationForm
 # Create your views here.
 # TODO: crear funcionalidad de poder registrarse y el login internamente dentro de este metodo
 def register(request):
@@ -25,6 +26,17 @@ def register(request):
     else:
         form = UserCreationForm()
     return render(request, 'accounts/register.html', {'form': form})
+
+@login_required
+def profile(request):
+    if request.method == 'POST':
+        form = CustomUserCreationForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect('profile')
+    else:
+        form = CustomUserCreationForm(instance=request.user)
+    return render(request, 'accounts/profile.html', {'form': form })
 
 class CustomLoginView(LoginView):
     template_name = 'accounts/login.html'
