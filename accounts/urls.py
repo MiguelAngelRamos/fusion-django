@@ -3,6 +3,8 @@ from .views import register, CustomLoginView, CustomLogoutView
 #* http://127.0.0.1:8000/accounts/register
 #* http://127.0.0.1:8000/accounts/home
 #* http://127.0.0.1:8000/accounts/logout
+#* http://127.0.0.1:8000/accounts/login
+
 urlpatterns = [
     path('register/', register, name='register'),
     # path('home/', home, name='home' ),
