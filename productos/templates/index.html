@@ -36,7 +36,7 @@
         <!-- end: editar -->
 
         <!-- begin: delete-->
-        <form style="display: inline-block;">
+        <form id="deleteForm-{{ producto.id }}" method="POST" action="{% url 'producto:eliminar' producto.id %}" style="display: inline-block;">
           {% csrf_token %}
           <button type="submit" class="btn btn-danger">
             <i class="fa fa-trash"></i>

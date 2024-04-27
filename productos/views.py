@@ -35,12 +35,14 @@ def detail(request, producto_id):
     producto = get_object_or_404(Producto, id=producto_id)
     return render(request, 'detail.html', context={'producto': producto})
 
-
+@login_required
+@permission_required('productos.delete_producto', raise_exception=False)
 def eliminar_producto(request, producto_id):
     producto = get_object_or_404(Producto, id=producto_id)
     if request.method == 'POST':
         producto.delete()
         return redirect('producto:index')
+    return redirect('producto:index')
     
 
 # def detail(request, producto_id):
