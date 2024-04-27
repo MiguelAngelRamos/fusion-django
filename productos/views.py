@@ -1,5 +1,5 @@
 from django.http import Http404, HttpResponseRedirect
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from .models import Producto
 from .forms import ProductoForm
 from django.contrib.auth.decorators import login_required, permission_required
@@ -34,6 +34,14 @@ def formulario(request):
 def detail(request, producto_id):
     producto = get_object_or_404(Producto, id=producto_id)
     return render(request, 'detail.html', context={'producto': producto})
+
+
+def eliminar_producto(request, producto_id):
+    producto = get_object_or_404(Producto, id=producto_id)
+    if request.method == 'POST':
+        producto.delete()
+        return redirect('producto:index')
+    
 
 # def detail(request, producto_id):
 #     try:
