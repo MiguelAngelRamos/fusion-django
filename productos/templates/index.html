@@ -30,7 +30,7 @@
       <td>{{ producto.categoria}}</td>
       <td>
         <!-- begin: editar -->
-          <a href="#" class="btn btn-success">
+          <a href="{% url 'producto:editar' producto.id %}" class="btn btn-success">
             <i class="fa fa-edit"></i>
           </a>
         <!-- end: editar -->

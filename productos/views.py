@@ -43,7 +43,17 @@ def eliminar_producto(request, producto_id):
         producto.delete()
         return redirect('producto:index')
     return redirect('producto:index')
-    
+
+def editar_producto(request, producto_id):
+    producto = get_object_or_404(Producto, id=producto_id)
+    if request.method == 'POST':
+        form = ProductoForm(request.POST, instance=producto)
+        if form.is_valid():
+            form.save()
+            return redirect('producto:index')
+    else:
+        form = ProductoForm(instance=producto)
+    return render(request, 'producto_form.html', {'form': form, 'is_editing': True})
 
 # def detail(request, producto_id):
 #     try:
