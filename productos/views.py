@@ -18,6 +18,7 @@ def index(request):
 @login_required
 @permission_required('productos.add_producto', raise_exception=True)
 def formulario(request):
+    print('Hola soy el Formulario - def formulario')
     if request.method == 'POST':
         form = ProductoForm(request.POST) # Aqui en el request.POST viene nombre, stock, categoria, imagen
         if form.is_valid():
@@ -44,6 +45,8 @@ def eliminar_producto(request, producto_id):
         return redirect('producto:index')
     return redirect('producto:index')
 
+@login_required
+@permission_required('productos.change_producto', raise_exception=False)
 def editar_producto(request, producto_id):
     producto = get_object_or_404(Producto, id=producto_id)
     if request.method == 'POST':

@@ -1,7 +1,9 @@
 {% extends 'base_nav.html'%}
 
 {% block content %}
-  <form action="{% url 'producto:formulario' %}" method="post">
+
+  <h1>{% if is_editing %} Editar Producto {% else %} Crear Producto {% endif %}</h1>
+  <form action="" method="post">
       {% csrf_token %}
       <div class="mb-3">
         <label for="id_nombre" class="form-label">Nombre del producto</label>
@@ -28,6 +30,6 @@
         {{ form.categoria}}
       </div>
 
-      <button type="submit" class="btn btn-success">Enviar</button>
+      <button type="submit" class="btn btn-success"> {{ is_editing|yesno:"Actualizar,Crear" }}</button>
   </form>
 {% endblock %}
