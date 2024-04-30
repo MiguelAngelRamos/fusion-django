@@ -17,9 +17,17 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include, reverse_lazy
 from django.views.generic.base import RedirectView
+from django.conf import settings
+from django.conf.urls.static import static
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('productos/', include('productos.urls')),
     path('accounts/', include('accounts.urls')),
     path('', RedirectView.as_view(url=reverse_lazy('login'), permanent=False))
 ]
+
+# Añadir esta parte para servir archivos estáticos y de media durante el desarrollo
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

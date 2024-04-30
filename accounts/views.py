@@ -1,42 +1,56 @@
 from django.shortcuts import render, redirect
+from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.models import Group
+from django.urls import reverse_lazy
 from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.decorators import login_required
-from django.urls import reverse_lazy
-from .forms import CustomUserCreationForm
+from .forms import CustomUserCreationForm, UserProfileForm
+from .models import UserProfile
+from django.db import transaction
+from django.core.exceptions import ObjectDoesNotExist
 # Create your views here.
 # TODO: crear funcionalidad de poder registrarse y el login internamente dentro de este metodo
 def register(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
-        
+        form = CustomUserCreationForm(request.POST)
         if form.is_valid():
-            user = form.save()
-            # Asignar al usuario a un group
-            group = Group.objects.get(name='Operarios')
-            user.groups.add(group)
-            messages.success(request, 'Registro exitoso. Bienvenido!')
-            return redirect('producto:index')
+            with transaction.atomic():  # Asegura que la creación del usuario y perfil sean atómicas
+                user = form.save()
+                UserProfile.objects.create(user=user)  # Crea un perfil vacío al registrar
+                try:
+                    group = Group.objects.get(name='Operarios')
+                    user.groups.add(group)
+                    messages.success(request, 'Registro exitoso. Bienvenido!')
+                except ObjectDoesNotExist:
+                    messages.warning(request, 'El grupo Operarios no existe y no fue asignado.')
+                return redirect('producto:index')
         else:
-            for field in form.errors:
-                form[field].field.widget.attrs['class'] += 'is-invalid'
-            messages.error(request, 'Por favor corrija los errores en el formulario')
+            messages.error(request, 'Por favor corrija los errores en el formulario.')
     else:
-        form = UserCreationForm()
+        form = CustomUserCreationForm()
+
+    for field in form:
+        field.field.widget.attrs['class'] = 'form-control'
+        if field.errors:
+            field.field.widget.attrs['class'] += ' is-invalid'
+
     return render(request, 'accounts/register.html', {'form': form})
 
 @login_required
 def profile(request):
+    profile, _ = UserProfile.objects.get_or_create(user=request.user)
     if request.method == 'POST':
-        form = CustomUserCreationForm(request.POST, instance=request.user)
-        if form.is_valid():
-            form.save()
+        user_form = CustomUserCreationForm(request.POST, instance=request.user)
+        profile_form = UserProfileForm(request.POST, request.FILES, instance=profile)
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
             return redirect('profile')
     else:
-        form = CustomUserCreationForm(instance=request.user)
-    return render(request, 'accounts/profile.html', {'form': form })
+        user_form = CustomUserCreationForm(instance=request.user)
+        profile_form = UserProfileForm(instance=profile)
+    return render(request, 'accounts/profile.html', {'user_form': user_form, 'profile_form': profile_form })
 
 class CustomLoginView(LoginView):
     template_name = 'accounts/login.html'
